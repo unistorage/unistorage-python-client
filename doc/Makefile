@@ -156,7 +156,7 @@ doctest:
 
 gh-pages:
 	git checkout gh-pages
-	cd .. ; rm -rf doc/build _sources _static
+	cd .. ; rm -rf doc/build sources static
 	cd .. ; git checkout master $(GH_PAGES_SOURCES) ; git reset HEAD
 	cd .. ; cd doc ; make html ; mv build/html/* ../
 	cd .. ; rm -rf $(GH_PAGES_SOURCES) doc/build
