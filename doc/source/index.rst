@@ -1,3 +1,12 @@
+Installation
+------------
+Project hosted on `Github <https://github.com/unistorage/unistorage-python-client>`_ and
+can be installed via pip:
+
+.. code-block:: shell
+
+    pip install git+git://github.com/unistorage/unistorage-python-client.git
+
 API
 ---
 .. automodule:: unistorage.client
