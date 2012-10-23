@@ -1,1 +1,348 @@
-First commit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API &mdash; unistorage-python-client 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="unistorage-python-client 0.0.1 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">unistorage-python-client 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-unistorage.client">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-unistorage.client" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="unistorage.client.UnistorageClient">
+<em class="property">class </em><tt class="descclassname">unistorage.client.</tt><tt class="descname">UnistorageClient</tt><big>(</big><em>url</em>, <em>token</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class that provides interface to the Unistorage API.
+Built on top of the Python <a class="reference external" href="http://docs.python-requests.org/">requests</a> library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> &#8211; Unistorage API root URL.</li>
+<li><strong>token</strong> &#8211; Access token.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">unistorage</span> <span class="o">=</span> <span class="n">UnistorageClient</span><span class="p">(</span>
+    <span class="s">&#39;http://localhost:5000/&#39;</span><span class="p">,</span> <span class="s">&#39;dc363e85965d461b81a4f78df45f636f&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<ul class="last simple">
+<li>All described methods can raise <a class="reference internal" href="#unistorage.client.UnistorageError" title="unistorage.client.UnistorageError"><tt class="xref py py-class docutils literal"><span class="pre">UnistorageError</span></tt></a>.</li>
+<li>All resource URIs returned by methods are relative.</li>
+</ul>
+</div>
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.apply_action">
+<tt class="descname">apply_action</tt><big>(</big><em>uri</em>, <em>action_name</em>, <em>action_args</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.apply_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies action to the file with specified URI. Returns resource URI of the resulting file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>action_name</strong> &#8211; Action name.</li>
+<li><strong>action_args</strong> &#8211; Dictionary of action arguments.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.apply_template">
+<tt class="descname">apply_template</tt><big>(</big><em>uri</em>, <em>template</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.apply_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies template to the file with specified URI. Returns resource URI of the resulting file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>template</strong> &#8211; Template URI.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.create_archive">
+<tt class="descname">create_archive</tt><big>(</big><em>archive_name</em>, <em>files</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.create_archive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates archive. Returns resource URI of created archive.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>archive_name</strong> &#8211; Archive name.</li>
+<li><strong>files</strong> &#8211; URIs of the files to be included in the archive.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">archive_uri</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">create_archive</span><span class="p">(</span><span class="s">&#39;images.zip&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">file1_uri</span><span class="p">,</span> <span class="n">file2_uri</span><span class="p">])</span>
+<span class="k">print</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">template_uri</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.create_template">
+<tt class="descname">create_template</tt><big>(</big><em>applicable_for</em>, <em>actions</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.create_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates template. Returns resource URI of the created template.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>applicable_for</strong> &#8211; Files type for that template can be applied.</li>
+<li><strong>actions</strong> &#8211; List of tuples, each of which contains two elements:
+action name and action arguments.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">resize</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;resize&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;mode&#39;</span><span class="p">:</span> <span class="s">&#39;keep&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">})</span>
+<span class="n">grayscale</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;grayscale&#39;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">template_uri</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span><span class="s">&#39;image&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">resize</span><span class="p">,</span> <span class="n">grayscale</span><span class="p">])</span>
+<span class="k">print</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">template_uri</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.get">
+<tt class="descname">get</tt><big>(</big><em>url</em>, <em>data=None</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a GET request. Returns response dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> &#8211; Relative URL.</li>
+<li><strong>data</strong> &#8211; Dictionary to be sent in the query string.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.post">
+<tt class="descname">post</tt><big>(</big><em>url</em>, <em>data=None</em>, <em>files=None</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a POST request. Returns response dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> &#8211; Relative URL.</li>
+<li><strong>data</strong> &#8211; Dictionary to be sent in the body of request.</li>
+<li><strong>files</strong> &#8211; <p>Dictionary of the files for multipart encoding upload.
+It passed directly to the <a class="reference external" href="http://docs.python-requests.org/">requests</a> library.
+See requests documentation for details:
+<a class="reference external" href="http://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file">http://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file</a></p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/path/to/file.doc&#39;</span><span class="p">)</span>
+<span class="n">unistorage</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;type_id&#39;</span><span class="p">:</span> <span class="s">&#39;news_thumbnails&#39;</span><span class="p">},</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;file&#39;</span><span class="p">:</span> <span class="nb">file</span><span class="p">})</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.upload_file">
+<tt class="descname">upload_file</tt><big>(</big><em>file_name</em>, <em>file_content</em>, <em>type_id=None</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uploads file to the Unisorage. Returns resource URI of the uploaded file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file_name</strong> &#8211; File name.</li>
+<li><strong>file_content</strong> &#8211; File-like object to be uploaded.</li>
+<li><strong>type_id</strong> &#8211; Type identifier for the <cite>file</cite>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/path/to/file.doc&#39;</span><span class="p">)</span>
+<span class="n">file_uri</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;file.doc&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">type_id</span><span class="o">=</span><span class="s">&#39;resume&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_uri</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="unistorage.client.UnistorageError">
+<em class="property">exception </em><tt class="descclassname">unistorage.client.</tt><tt class="descname">UnistorageError</tt><big>(</big><em>status_code</em>, <em>msg</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Client raises this when it receives error from Unistorage API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>status_code</strong> &#8211; Response HTTP status code.</li>
+<li><strong>msg</strong> &#8211; Error message.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="example-of-usage">
+<h1>Example of usage<a class="headerlink" href="#example-of-usage" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">unistorage</span> <span class="kn">import</span> <span class="n">UnistorageClient</span>
+
+
+<span class="c"># Create Unistorage client</span>
+<span class="n">unistorage</span> <span class="o">=</span> <span class="n">UnistorageClient</span><span class="p">(</span>
+    <span class="s">&#39;http://localhost:5000/&#39;</span><span class="p">,</span> <span class="s">&#39;3932da55c30740852fd2ba22dd59a382&#39;</span><span class="p">)</span>
+
+<span class="c"># Create template: resize and then grayscale</span>
+<span class="n">template_uri</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span><span class="s">&#39;image&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s">&#39;resize&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;mode&#39;</span><span class="p">:</span> <span class="s">&#39;keep&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">}),</span>
+    <span class="p">(</span><span class="s">&#39;grayscale&#39;</span><span class="p">,</span> <span class="p">{})</span>
+<span class="p">])</span>
+
+<span class="c"># Upload file</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/path/to/upchk.gif&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">file_uri</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;upchk.gif&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">type_id</span><span class="o">=</span><span class="s">&#39;qwerty&#39;</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">unistorage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_uri</span><span class="p">))</span>
+
+<span class="c"># Apply template to the file</span>
+<span class="n">modified_file_uri</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">apply_template</span><span class="p">(</span><span class="n">file_uri</span><span class="p">,</span> <span class="n">template_uri</span><span class="p">)</span>
+
+<span class="c"># See that template has been enqueued</span>
+<span class="k">assert</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">modified_file_uri</span><span class="p">)[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;wait&#39;</span>
+
+<span class="c"># Wait some time</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">modified_file_uri</span><span class="p">)</span>
+
+<span class="c"># See that status has changed to &#39;ok&#39;</span>
+<span class="k">assert</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;ok&#39;</span>
+<span class="c"># And template was applied</span>
+<span class="k">assert</span> <span class="n">response</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">][</span><span class="s">&#39;extra&#39;</span><span class="p">][</span><span class="s">&#39;width&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">50</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="c"># Create archive that contains both original and modified file</span>
+<span class="n">archive_uri</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">create_archive</span><span class="p">(</span><span class="s">&#39;images.zip&#39;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="n">file_uri</span><span class="p">,</span>
+    <span class="n">modified_file_uri</span>
+<span class="p">])</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">unistorage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">archive_uri</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">API</a></li>
+<li><a class="reference internal" href="#example-of-usage">Example of usage</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="#">unistorage-python-client 0.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Anton Romanovich.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
