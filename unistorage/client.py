@@ -22,8 +22,8 @@ class UnistorageError(Exception):
 class UnistorageTimeout(Exception):
     """Client raises this when the request timed out.
     """
-    def __init__(self):
-        super(UnistorageTimeout, self).__init__('Unistorage API request timed out.')
+    def __str__(self):
+        return 'Unistorage API request timed out.'
 
 
 class UnistorageClient(object):
@@ -184,35 +184,3 @@ class UnistorageClient(object):
         zip_uri = response['resource_uri']
         zip_response = self._get(zip_uri)
         return ZipFile(zip_uri, zip_response)
-
-
-from models import Action
-from client import UnistorageClient
-
-unistorage = UnistorageClient(
-    'http://localhost:5000/', '01234567890123456789012345678901')
-
-with open('/home/aromanovich/66/big_stamped-0.jpg', 'rb') as f:
-    image_file = unistorage.upload_file('upchk.jpg', f, type_id='qwerty')
-
-image_file
-
-with open('/home/aromanovich/66/big_stamped-1.jpg', 'rb') as f:
-    doc_file = unistorage.upload_file('upchk2.jpg', f, type_id='qwerty')
-
-doc_file
-
-
-zip_file = unistorage.get_zipped('lala.zip', [image_file, doc_file])
-zip_file
-
-resized_image = image_file.resize(unistorage, 'crop', 50, 50)
-resized_image
-
-template = unistorage.create_template('image', [
-    Action('resize', {'mode': 'keep', 'w': 50, 'h': 50}),
-    Action('grayscale')
-])
-
-resized_grayscaled_image = image_file.apply_template(unistorage, template)
-resized_grayscaled_image
