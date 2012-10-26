@@ -1,14 +1,8 @@
-import urllib
 from urlparse import urljoin
 
 import requests
-import decorator
-
-
-@decorator.decorator  # Saves function name, signature and docstring -- needed for Sphinx docs
-def pluck_resource_uri(method, *args, **kwargs):
-    response = method(*args, **kwargs)
-    return response['resource_uri']
+from requests.exceptions import Timeout
+from models import FileFactory, Template, ZipFile
 
 
 class UnistorageError(Exception):
@@ -25,9 +19,15 @@ class UnistorageError(Exception):
         return repr(self.msg)
 
 
+class UnistorageTimeout(Exception):
+    """Client raises this when the request timed out.
+    """
+    def __init__(self):
+        super(UnistorageTimeout, self).__init__('Unistorage API request timed out.')
+
+
 class UnistorageClient(object):
     """Class that provides interface to the Unistorage API.
-    Built on top of the Python `requests <http://docs.python-requests.org/>`_ library.
 
     :param url: Unistorage API root URL.
     :param token: Access token.
@@ -39,8 +39,7 @@ class UnistorageClient(object):
 
     .. note::
 
-        * All described methods can raise :class:`UnistorageError`.
-        * All resource URIs returned by methods are relative.
+        All methods can raise :class:`UnistorageError` and :class:`UnistorageTimeout`.
     """
     def __init__(self, url, token):
         self.url = url
@@ -52,25 +51,31 @@ class UnistorageClient(object):
         """
         kwargs.setdefault('headers', {})
         kwargs['headers'].update({'Token': self.token})
-        response = requests.request(method, urljoin(self.url, url), **kwargs)
+        try:
+            response = requests.request(method, urljoin(self.url, url), **kwargs)
+        except Timeout:
+            raise UnistorageTimeout()
         
         status_code = response.status_code
         if 200 <= status_code < 300:
+            if not response.json:
+                raise UnistorageError(
+                    status_code, 'Unistorage API returned invalid JSON: %s' % response.content)
             return response.json
         elif status_code >= 400:
             msg = response.json and response.json.get('msg') or response.content
             raise UnistorageError(status_code, msg)
 
-    def get(self, url, data=None):
-        """Sends a GET request. Returns response dictionary.
+    def _get(self, url, data=None):
+        """Sends a GET request. Returns the response dictionary.
         
         :param url: Relative URL.
         :param data: Dictionary to be sent in the query string.
         """
         return self._request('get', url, params=data)
     
-    def post(self, url, data=None, files=None):
-        """Sends a POST request. Returns response dictionary.
+    def _post(self, url, data=None, files=None):
+        """Sends a POST request. Returns the response dictionary.
         
         :param url: Relative URL.
         :param data: Dictionary to be sent in the body of request.
@@ -78,86 +83,136 @@ class UnistorageClient(object):
             It passed directly to the `requests <http://docs.python-requests.org/>`_ library.
             See requests documentation for details:
             http://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file
-
-        .. code-block:: python
-
-            file = open('/path/to/file.doc')
-            unistorage.post('/', data={'type_id': 'news_thumbnails'}, files={'file': file})
         """
         return self._request('post', url, data=data, files=files)
 
-    @pluck_resource_uri
     def upload_file(self, file_name, file_content, type_id=None):
-        """Uploads file to the Unisorage. Returns resource URI of the uploaded file.
+        """Uploads file to the Unistorage. Returns :class:`unistorage.models.File`.
         
         :param file_name: File name.
         :param file_content: File-like object to be uploaded.
-        :param type_id: Type identifier for the `file`.
+        :param type_id: Type identifier.
+        :rtype: :class:`unistorage.models.File`
 
         .. code-block:: python
 
-            file = open('/path/to/file.doc')
-            file_uri = unistorage.upload_file('file.doc', file, type_id='resume')
-            print unistorage.get(file_uri)
+            >>> file = open('/path/to//jpg.jpg')
+            >>> unistorage.upload_file('jpg.jpg', file, type_id='bubu')
+            <models.ImageFile object at 0x13edf10>
         """
         data = type_id and {'type_id': type_id} or None
         files = {'file': (file_name, file_content)}
-        return self.post('/', data=data, files=files)
+        upload_response = self._post('/', data=data, files=files)
 
-    @pluck_resource_uri
+        file_uri = upload_response['resource_uri']
+        file_response = self._get(file_uri)
+
+        return FileFactory.build_from_dict(file_uri, file_response)
+
     def create_template(self, applicable_for, actions):
-        """Creates template. Returns resource URI of the created template.
+        """Creates template. Returns :class:`unistorage.models.Template`.
         
         :param applicable_for: Files type for that template can be applied.
-        :param actions: List of tuples, each of which contains two elements:
-            action name and action arguments.
+            Supported types: ``'image'``, ``'video'``, ``'doc'``.
+        :param actions: List of :class:`unistorage.models.Action`.
+        :rtype: :class:`unistorage.models.Template`
 
         .. code-block:: python
 
-            resize = ('resize', {'mode': 'keep', 'w': 50})
-            grayscale = ('grayscale', {})
-            template_uri = unistorage.create_template('image', [resize, grayscale])
-            print unistorage.get(template_uri)
+            >>> from unistorage import Action
+            >>> unistorage.create_template('image', [
+            ...     Action('resize', {'mode': 'keep', 'w': 50, 'h': 50}),
+            ...     Action('grayscale')
+            ... ])
+            <models.Template object at 0x19a5910>
         """
-        encoded_actions = \
-            [urllib.urlencode(dict(args, action=action)) for action, args in actions]
-        return self.post('/template/', data={
+        encoded_actions = [action.encode() for action in actions]
+        response = self._post('/template/', data={
             'applicable_for': applicable_for,
             'action[]': encoded_actions
         })
+        return Template(response['resource_uri'])
 
-    @pluck_resource_uri
-    def apply_action(self, uri, action_name, action_args):
-        """Applies action to the file with specified URI. Returns resource URI of the resulting file.
+    def apply_action(self, file, action):
+        """Applies `action` to the `file`.
 
-        :param action_name: Action name.
-        :param action_args: Dictionary of action arguments.
+        :param file: Source file.
+        :type file: :class:`unistorage.models.File`
+        :param action: Action to be applied.
+        :type action: :class:`unistorage.models.Action`
+        :rtype: :class:`unistorage.models.File`
         """
-        data = {'action': action_name}
-        data.update(action_args)
-        return self.get(uri, data=data)
+        action_response = self._get(file.resource_uri, data=action.to_dict())
+        resulting_file_uri = action_response['resource_uri']
+        file_response = self._get(resulting_file_uri)
+        return FileFactory.build_from_dict(resulting_file_uri, file_response)
 
-    @pluck_resource_uri
-    def apply_template(self, uri, template):
-        """Applies template to the file with specified URI. Returns resource URI of the resulting file.
+    def apply_template(self, file, template):
+        """Applies `template` to the `file`.
 
-        :param template: Template URI.
+        :param file: Source file.
+        :type file: :class:`unistorage.models.File`
+        :param template: Template to be applied.
+        :type template: :class:`unistorage.models.Template`
+        :rtype: :class:`unistorage.models.File`
         """
-        return self.get(uri, data={'template': template})
+        template_response = self._get(file.resource_uri, data={'template': template.resource_uri})
+        resulting_file_uri = template_response['resource_uri']
+        file_response = self._get(resulting_file_uri)
+        return FileFactory.build_from_dict(resulting_file_uri, file_response)
 
-    @pluck_resource_uri
-    def create_archive(self, archive_name, files):
-        """Creates archive. Returns resource URI of created archive.
+    def get_zipped(self, zip_file_name, files):
+        """Creates ZIP archive.
 
         :param archive_name: Archive name.
-        :param files: URIs of the files to be included in the archive.
+        :param files: List of :class:`unistorage.models.File`.
+        :rtype: :class:`unistorage.models.ZipFile`
 
         .. code-block:: python
 
-            archive_uri = unistorage.create_archive('images.zip', [file1_uri, file2_uri])
-            print unistorage.get(template_uri)
+            >>> with open('/path/to/file1.jpg', 'rb') as f:
+            ...     file1 = unistorage.upload_file('upchk.jpg', f, type_id='qwerty')
+            >>> with open('/path/to/file2.jpg', 'rb') as f:
+            ...     file2 = unistorage.upload_file('upchk2.jpg', f, type_id='qwerty')
+            >>> unistorage.get_zipped('files.zip', [file1, file2])
+            <models.ZipFile object at 0x19ab710>
         """
-        return self.post('/zip/', data={
-            'file': files,
-            'filename': archive_name
+        response = self._post('/zip/', data={
+            'file': [file.resource_uri for file in files],
+            'filename': zip_file_name
         })
+        zip_uri = response['resource_uri']
+        zip_response = self._get(zip_uri)
+        return ZipFile(zip_uri, zip_response)
+
+
+from models import Action
+from client import UnistorageClient
+
+unistorage = UnistorageClient(
+    'http://localhost:5000/', '01234567890123456789012345678901')
+
+with open('/home/aromanovich/66/big_stamped-0.jpg', 'rb') as f:
+    image_file = unistorage.upload_file('upchk.jpg', f, type_id='qwerty')
+
+image_file
+
+with open('/home/aromanovich/66/big_stamped-1.jpg', 'rb') as f:
+    doc_file = unistorage.upload_file('upchk2.jpg', f, type_id='qwerty')
+
+doc_file
+
+
+zip_file = unistorage.get_zipped('lala.zip', [image_file, doc_file])
+zip_file
+
+resized_image = image_file.resize(unistorage, 'crop', 50, 50)
+resized_image
+
+template = unistorage.create_template('image', [
+    Action('resize', {'mode': 'keep', 'w': 50, 'h': 50}),
+    Action('grayscale')
+])
+
+resized_grayscaled_image = image_file.apply_template(unistorage, template)
+resized_grayscaled_image
