@@ -12,51 +12,53 @@ API
 .. automodule:: unistorage.client
     :members:
 
+Models
+------
+.. autoclass:: unistorage.models.Action
+    :members:
+
+.. automodule:: unistorage.models
+    :members:
+    :inherited-members:
+    :show-inheritance:
+    :exclude-members: Action
+
 Example of usage
 ----------------
 .. code-block:: python
 
-    import time
-    from pprint import pprint
+    >>> from unistorage import UnistorageClient, Action
+    >>> 
+    >>> unistorage = UnistorageClient(
+    ...     'http://localhost:5000/', '01234567890123456789012345678901')
 
-    from unistorage import UnistorageClient
+    >>> with open('/path/to/image.jpg', 'rb') as f:
+    ...     image_file = unistorage.upload_file('upchk.jpg', f, type_id='qwerty')
 
+    >>> image_file
+    <models.ImageFile object at 0x28adad0>
 
-    # Create Unistorage client
-    unistorage = UnistorageClient(
-    	'http://localhost:5000/', '3932da55c30740852fd2ba22dd59a382')
+    >>> with open('/path/to/document.doc', 'rb') as f:
+    ...     doc_file = unistorage.upload_file('upchk.doc', f)
 
-    # Create template: resize and then grayscale
-    template_uri = unistorage.create_template('image', [
-        ('resize', {'mode': 'keep', 'w': 50}),
-        ('grayscale', {})
-    ])
+    >>> doc_file
+    <models.DocFile object at 0x28aac10>
 
-    # Upload file
-    with open('/path/to/upchk.gif', 'rb') as f:
-    	file_uri = unistorage.upload_file('upchk.gif', f, type_id='qwerty')
-    pprint(unistorage.get(file_uri))
+    >>> unistorage.get_zipped('archive.zip', [image_file, doc_file])
+    <models.ZipFile object at 0x28b76d0>
 
-    # Apply template to the file
-    modified_file_uri = unistorage.apply_template(file_uri, template_uri)
+    >>> image_file.resize(unistorage, 'crop', 50, 50)
+    <models.TemporaryFile object at 0x28aadd0>
 
-    # See that template has been enqueued
-    assert unistorage.get(modified_file_uri)['status'] == 'wait'
+    >>> doc_file.convert(unistorage, 'txt')
+    <models.PendingFile object at 0x15f0ad0>
 
-    # Wait some time
-    time.sleep(5)
+    >>> template = unistorage.create_template('image', [
+    ...     Action('resize', {'mode': 'keep', 'w': 50, 'h': 50}),
+    ...     Action('grayscale')
+    ... ])
+    <models.Template object at 0x2c13090>
 
-    response = unistorage.get(modified_file_uri)
-
-    # See that status has changed to 'ok'
-    assert response['status'] == 'ok'
-    # And template was applied
-    assert response['data']['extra']['width'] == 50
-    pprint(response)
-
-    # Create archive that contains both original and modified file
-    archive_uri = unistorage.create_archive('images.zip', [
-        file_uri,
-        modified_file_uri
-    ])
-    pprint(unistorage.get(archive_uri))
+    >>> resized_grayscaled_image = image_file.apply_template(unistorage, template)
+    >>> resized_grayscaled_image
+    <models.PendingFile object at 0x28adf10>
