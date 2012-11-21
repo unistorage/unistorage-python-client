@@ -79,35 +79,35 @@ class PendingFile(File):
 class TemporaryFile(File):
     """Represents temporary file (temporary files have status ``'just_uri'``).
 
-    .. attribute:: uri
+    .. attribute:: url
 
-        URI of the binary content.
+        URL of the binary content.
     """
     def __init__(self, resource_uri, response):
         super(TemporaryFile, self).__init__(resource_uri, response)
         data = response['data']
-        self.uri = data['uri']
+        self.url = data['url']
 
 
 class ZipFile(File):
     """Represents ZIP archive.
 
-    .. attribute:: uri
+    .. attribute:: url
 
-        URI of the binary content.
+        URL of the binary content.
     """
     def __init__(self, resource_uri, response):
         super(ZipFile, self).__init__(resource_uri, response)
         data = response['data']
-        self.uri = data['uri']
+        self.url = data['url']
 
 
 class RegularFile(File):
     """Represents regular file (regular files have status ``'ok'``).
 
-    .. attribute:: uri
+    .. attribute:: url
             
-        URI of the binary content.
+        URL of the binary content.
 
     .. attribute:: mimetype
 
@@ -124,7 +124,7 @@ class RegularFile(File):
     def __init__(self, resource_uri, response):
         super(RegularFile, self).__init__(resource_uri, response)
         data = response['data']
-        self.uri = data['uri']
+        self.url = data['url']
         self.mimetype = data['mimetype']
         self.size = data['size']
         self.name = data['name']
