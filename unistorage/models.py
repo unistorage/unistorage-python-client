@@ -218,9 +218,9 @@ class VideoFile(RegularFile, Watermarkable):
     def __init__(self, resource_uri, response):
         super(VideoFile, self).__init__(resource_uri, response)
         extra = response['data']['extra']
-        self.width = extra['width']
-        self.height = extra['height']
-        self.codec = extra['codec']
+        self.width = extra['video']['width']
+        self.height = extra['video']['height']
+        self.codec = extra['video']['codec']
 
 
 class DocFile(RegularFile):
