@@ -33,6 +33,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="#">unistorage-python-client 0.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -49,11 +52,651 @@ can be installed via pip:</p>
 <div class="highlight-shell"><pre>pip install git+git://github.com/unistorage/unistorage-python-client.git</pre>
 </div>
 </div>
-<div class="section" id="api">
-<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-unistorage.client">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-unistorage.client" title="Permalink to this headline">¶</a></h1>
+<dl class="exception">
+<dt id="unistorage.client.UnistorageError">
+<em class="property">exception </em><tt class="descclassname">unistorage.client.</tt><tt class="descname">UnistorageError</tt><big>(</big><em>status_code</em>, <em>msg</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Client raises this when it receives error from Unistorage API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>status_code</strong> &#8211; Response HTTP status code.</li>
+<li><strong>msg</strong> &#8211; Error message.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="exception">
+<dt id="unistorage.client.UnistorageTimeout">
+<em class="property">exception </em><tt class="descclassname">unistorage.client.</tt><tt class="descname">UnistorageTimeout</tt><a class="headerlink" href="#unistorage.client.UnistorageTimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Client raises this when the request timed out.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.client.UnistorageClient">
+<em class="property">class </em><tt class="descclassname">unistorage.client.</tt><tt class="descname">UnistorageClient</tt><big>(</big><em>url</em>, <em>token</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class that provides interface to the Unistorage API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> &#8211; Unistorage API root URL.</li>
+<li><strong>token</strong> &#8211; Access token.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">unistorage</span> <span class="o">=</span> <span class="n">UnistorageClient</span><span class="p">(</span>
+    <span class="s">&#39;http://localhost:5000/&#39;</span><span class="p">,</span> <span class="s">&#39;dc363e85965d461b81a4f78df45f636f&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All methods can raise <a class="reference internal" href="#unistorage.client.UnistorageError" title="unistorage.client.UnistorageError"><tt class="xref py py-class docutils literal"><span class="pre">UnistorageError</span></tt></a> and <a class="reference internal" href="#unistorage.client.UnistorageTimeout" title="unistorage.client.UnistorageTimeout"><tt class="xref py py-class docutils literal"><span class="pre">UnistorageTimeout</span></tt></a>.</p>
+</div>
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.get_file">
+<tt class="descname">get_file</tt><big>(</big><em>file_uri</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.get_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves data from Unistorage and returns <a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_uri</strong> &#8211; File URI.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.get_zip_file">
+<tt class="descname">get_zip_file</tt><big>(</big><em>zip_uri</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.get_zip_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves data from Unistorage and returns <a class="reference internal" href="#unistorage.models.ZipFile" title="unistorage.models.ZipFile"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.ZipFile</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_uri</strong> &#8211; Zip file URI.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.upload_file">
+<tt class="descname">upload_file</tt><big>(</big><em>file_name</em>, <em>file_content</em>, <em>type_id=None</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.upload_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uploads file to the Unistorage. Returns <a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file_name</strong> &#8211; File name.</li>
+<li><strong>file_content</strong> &#8211; File-like object to be uploaded.</li>
+<li><strong>type_id</strong> &#8211; Type identifier.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/path/to//jpg.jpg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unistorage</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;jpg.jpg&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">type_id</span><span class="o">=</span><span class="s">&#39;bubu&#39;</span><span class="p">)</span>
+<span class="go">&lt;models.ImageFile object at 0x13edf10&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.create_template">
+<tt class="descname">create_template</tt><big>(</big><em>applicable_for</em>, <em>actions</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.create_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates template. Returns <a class="reference internal" href="#unistorage.models.Template" title="unistorage.models.Template"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Template</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>applicable_for</strong> &#8211; Files type for that template can be applied.
+Supported types: <tt class="docutils literal"><span class="pre">'image'</span></tt>, <tt class="docutils literal"><span class="pre">'video'</span></tt>, <tt class="docutils literal"><span class="pre">'doc'</span></tt>.</li>
+<li><strong>actions</strong> &#8211; List of <a class="reference internal" href="#unistorage.models.Action" title="unistorage.models.Action"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Action</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.Template" title="unistorage.models.Template"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Template</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">unistorage</span> <span class="kn">import</span> <span class="n">Action</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unistorage</span><span class="o">.</span><span class="n">create_template</span><span class="p">(</span><span class="s">&#39;image&#39;</span><span class="p">,</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Action</span><span class="p">(</span><span class="s">&#39;resize&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;mode&#39;</span><span class="p">:</span> <span class="s">&#39;keep&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s">&#39;h&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">}),</span>
+<span class="gp">... </span>    <span class="n">Action</span><span class="p">(</span><span class="s">&#39;grayscale&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">])</span>
+<span class="go">&lt;models.Template object at 0x19a5910&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.apply_action">
+<tt class="descname">apply_action</tt><big>(</big><em>file</em>, <em>action</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.apply_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies <cite>action</cite> to the <cite>file</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> (<a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a>) &#8211; Source file.</li>
+<li><strong>action</strong> (<a class="reference internal" href="#unistorage.models.Action" title="unistorage.models.Action"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Action</span></tt></a>) &#8211; Action to be applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.apply_template">
+<tt class="descname">apply_template</tt><big>(</big><em>file</em>, <em>template</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.apply_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies <cite>template</cite> to the <cite>file</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> (<a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a>) &#8211; Source file.</li>
+<li><strong>template</strong> (<a class="reference internal" href="#unistorage.models.Template" title="unistorage.models.Template"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Template</span></tt></a>) &#8211; Template to be applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.client.UnistorageClient.get_zipped">
+<tt class="descname">get_zipped</tt><big>(</big><em>zip_file_name</em>, <em>files</em><big>)</big><a class="headerlink" href="#unistorage.client.UnistorageClient.get_zipped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates ZIP archive.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>archive_name</strong> &#8211; Archive name.</li>
+<li><strong>files</strong> &#8211; List of <a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.ZipFile" title="unistorage.models.ZipFile"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.ZipFile</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/path/to/file1.jpg&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">file1</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;upchk.jpg&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">type_id</span><span class="o">=</span><span class="s">&#39;qwerty&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;/path/to/file2.jpg&#39;</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">file2</span> <span class="o">=</span> <span class="n">unistorage</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s">&#39;upchk2.jpg&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">type_id</span><span class="o">=</span><span class="s">&#39;qwerty&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unistorage</span><span class="o">.</span><span class="n">get_zipped</span><span class="p">(</span><span class="s">&#39;files.zip&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">file1</span><span class="p">,</span> <span class="n">file2</span><span class="p">])</span>
+<span class="go">&lt;models.ZipFile object at 0x19ab710&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="models">
 <h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="unistorage.models.Action">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">Action</tt><big>(</big><em>name</em>, <em>*args</em><big>)</big><a class="headerlink" href="#unistorage.models.Action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class that represents action.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>action_name</strong> &#8211; Action name.</li>
+<li><strong>action_args</strong> &#8211; Dictionary contains arguments of the action.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">action</span> <span class="o">=</span> <span class="n">Action</span><span class="p">(</span><span class="s">&#39;resize&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;mode&#39;</span><span class="p">:</span> <span class="s">&#39;crop&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s">&#39;h&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">action</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="go">{&#39;action&#39;: &#39;resize&#39;, &#39;h&#39;: 100, &#39;mode&#39;: &#39;crop&#39;, &#39;w&#39;: 100}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">action</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+<span class="go">&#39;action=resize&amp;h=100&amp;mode=crop&amp;w=100&#39;</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="unistorage.models.Action.encode">
+<tt class="descname">encode</tt><big>(</big><big>)</big><a class="headerlink" href="#unistorage.models.Action.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns URL-encoded representation of this action.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.Action.to_dict">
+<tt class="descname">to_dict</tt><big>(</big><big>)</big><a class="headerlink" href="#unistorage.models.Action.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns dictionary that contains both action arguments and action name.
+It can be URL-encoded and used to call the Unistorage API.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-unistorage.models"></span><dl class="class">
+<dt id="unistorage.models.Template">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">Template</tt><big>(</big><em>resource_uri</em><big>)</big><a class="headerlink" href="#unistorage.models.Template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Represents template.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resource_uri</strong> &#8211; File resource URI.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="unistorage.models.Template.resource_uri">
+<tt class="descname">resource_uri</tt><a class="headerlink" href="#unistorage.models.Template.resource_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resource URI.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.File">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">File</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.File" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Base file class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>resource_uri</strong> &#8211; File resource URI.</li>
+<li><strong>response</strong> &#8211; File data (Unistorage API response).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="unistorage.models.File.resource_uri">
+<tt class="descname">resource_uri</tt><a class="headerlink" href="#unistorage.models.File.resource_uri" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resource URI.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="unistorage.models.File.ttl">
+<tt class="descname">ttl</tt><a class="headerlink" href="#unistorage.models.File.ttl" title="Permalink to this definition">¶</a></dt>
+<dd><p>TTL.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.PendingFile">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">PendingFile</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.PendingFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+<p>Represents pending file (pending files have status <tt class="docutils literal"><span class="pre">'wait'</span></tt>).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.TemporaryFile">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">TemporaryFile</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.TemporaryFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+<p>Represents temporary file (temporary files have status <tt class="docutils literal"><span class="pre">'just_uri'</span></tt>).</p>
+<dl class="attribute">
+<dt id="unistorage.models.TemporaryFile.url">
+<tt class="descname">url</tt><a class="headerlink" href="#unistorage.models.TemporaryFile.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL of the binary content.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.ZipFile">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">ZipFile</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.ZipFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+<p>Represents ZIP archive.</p>
+<dl class="attribute">
+<dt id="unistorage.models.ZipFile.url">
+<tt class="descname">url</tt><a class="headerlink" href="#unistorage.models.ZipFile.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL of the binary content.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.RegularFile">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">RegularFile</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.RegularFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+<p>Represents regular file (regular files have status <tt class="docutils literal"><span class="pre">'ok'</span></tt>).</p>
+<dl class="attribute">
+<dt id="unistorage.models.RegularFile.url">
+<tt class="descname">url</tt><a class="headerlink" href="#unistorage.models.RegularFile.url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL of the binary content.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="unistorage.models.RegularFile.mimetype">
+<tt class="descname">mimetype</tt><a class="headerlink" href="#unistorage.models.RegularFile.mimetype" title="Permalink to this definition">¶</a></dt>
+<dd><p>MIME type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="unistorage.models.RegularFile.size">
+<tt class="descname">size</tt><a class="headerlink" href="#unistorage.models.RegularFile.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Size in bytes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="unistorage.models.RegularFile.name">
+<tt class="descname">name</tt><a class="headerlink" href="#unistorage.models.RegularFile.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.RegularFile.apply_template">
+<tt class="descname">apply_template</tt><big>(</big><em>unistorage</em>, <em>template</em><big>)</big><a class="headerlink" href="#unistorage.models.RegularFile.apply_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies template to this file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unistorage</strong> (<a class="reference internal" href="#unistorage.client.UnistorageClient" title="unistorage.client.UnistorageClient"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.client.UnistorageClient</span></tt></a>) &#8211; Unistorage client</li>
+<li><strong>template</strong> (<a class="reference internal" href="#unistorage.models.Template" title="unistorage.models.Template"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Template</span></tt></a>) &#8211; Template to be applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.ImageFile">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">ImageFile</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.ImageFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#unistorage.models.RegularFile" title="unistorage.models.RegularFile"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.RegularFile</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Watermarkable</span></tt></p>
+<p>Represents image file.</p>
+<dl class="attribute">
+<dt id="unistorage.models.ImageFile.width">
+<tt class="descname">width</tt><a class="headerlink" href="#unistorage.models.ImageFile.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image width.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="unistorage.models.ImageFile.height">
+<tt class="descname">height</tt><a class="headerlink" href="#unistorage.models.ImageFile.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Image height.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.ImageFile.convert">
+<tt class="descname">convert</tt><big>(</big><em>unistorage</em>, <em>to</em><big>)</big><a class="headerlink" href="#unistorage.models.ImageFile.convert" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.ImageFile.resize">
+<tt class="descname">resize</tt><big>(</big><em>unistorage</em>, <em>mode</em>, <em>w</em>, <em>h</em><big>)</big><a class="headerlink" href="#unistorage.models.ImageFile.resize" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.ImageFile.grayscale">
+<tt class="descname">grayscale</tt><big>(</big><em>unistorage</em><big>)</big><a class="headerlink" href="#unistorage.models.ImageFile.grayscale" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.ImageFile.rotate">
+<tt class="descname">rotate</tt><big>(</big><em>unistorage</em>, <em>angle</em><big>)</big><a class="headerlink" href="#unistorage.models.ImageFile.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.ImageFile.apply_template">
+<tt class="descname">apply_template</tt><big>(</big><em>unistorage</em>, <em>template</em><big>)</big><a class="headerlink" href="#unistorage.models.ImageFile.apply_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies template to this file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unistorage</strong> (<a class="reference internal" href="#unistorage.client.UnistorageClient" title="unistorage.client.UnistorageClient"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.client.UnistorageClient</span></tt></a>) &#8211; Unistorage client</li>
+<li><strong>template</strong> (<a class="reference internal" href="#unistorage.models.Template" title="unistorage.models.Template"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Template</span></tt></a>) &#8211; Template to be applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.ImageFile.watermark">
+<tt class="descname">watermark</tt><big>(</big><em>unistorage</em>, <em>watermark</em>, <em>corner</em>, <em>w</em>, <em>h</em>, <em>w_pad</em>, <em>h_pad</em><big>)</big><a class="headerlink" href="#unistorage.models.ImageFile.watermark" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.VideoFile">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">VideoFile</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.VideoFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#unistorage.models.RegularFile" title="unistorage.models.RegularFile"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.RegularFile</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Watermarkable</span></tt></p>
+<p>Represents video file.</p>
+<dl class="attribute">
+<dt id="unistorage.models.VideoFile.width">
+<tt class="descname">width</tt><a class="headerlink" href="#unistorage.models.VideoFile.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Video width.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="unistorage.models.VideoFile.height">
+<tt class="descname">height</tt><a class="headerlink" href="#unistorage.models.VideoFile.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>Video height.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="unistorage.models.VideoFile.codec">
+<tt class="descname">codec</tt><a class="headerlink" href="#unistorage.models.VideoFile.codec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Video codec.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.VideoFile.extract_audio">
+<tt class="descname">extract_audio</tt><big>(</big><em>unistorage</em>, <em>to</em><big>)</big><a class="headerlink" href="#unistorage.models.VideoFile.extract_audio" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.VideoFile.apply_template">
+<tt class="descname">apply_template</tt><big>(</big><em>unistorage</em>, <em>template</em><big>)</big><a class="headerlink" href="#unistorage.models.VideoFile.apply_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies template to this file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unistorage</strong> (<a class="reference internal" href="#unistorage.client.UnistorageClient" title="unistorage.client.UnistorageClient"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.client.UnistorageClient</span></tt></a>) &#8211; Unistorage client</li>
+<li><strong>template</strong> (<a class="reference internal" href="#unistorage.models.Template" title="unistorage.models.Template"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Template</span></tt></a>) &#8211; Template to be applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.VideoFile.watermark">
+<tt class="descname">watermark</tt><big>(</big><em>unistorage</em>, <em>watermark</em>, <em>corner</em>, <em>w</em>, <em>h</em>, <em>w_pad</em>, <em>h_pad</em><big>)</big><a class="headerlink" href="#unistorage.models.VideoFile.watermark" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.DocFile">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">DocFile</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.DocFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#unistorage.models.RegularFile" title="unistorage.models.RegularFile"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.RegularFile</span></tt></a></p>
+<p>Represents document file.</p>
+<dl class="method">
+<dt id="unistorage.models.DocFile.convert">
+<tt class="descname">convert</tt><big>(</big><em>unistorage</em>, <em>to</em><big>)</big><a class="headerlink" href="#unistorage.models.DocFile.convert" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.DocFile.apply_template">
+<tt class="descname">apply_template</tt><big>(</big><em>unistorage</em>, <em>template</em><big>)</big><a class="headerlink" href="#unistorage.models.DocFile.apply_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies template to this file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unistorage</strong> (<a class="reference internal" href="#unistorage.client.UnistorageClient" title="unistorage.client.UnistorageClient"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.client.UnistorageClient</span></tt></a>) &#8211; Unistorage client</li>
+<li><strong>template</strong> (<a class="reference internal" href="#unistorage.models.Template" title="unistorage.models.Template"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Template</span></tt></a>) &#8211; Template to be applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="unistorage.models.AudioFile">
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">AudioFile</tt><big>(</big><em>resource_uri</em>, <em>response</em><big>)</big><a class="headerlink" href="#unistorage.models.AudioFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#unistorage.models.RegularFile" title="unistorage.models.RegularFile"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.RegularFile</span></tt></a></p>
+<p>Represents audio file.</p>
+<dl class="method">
+<dt id="unistorage.models.AudioFile.convert">
+<tt class="descname">convert</tt><big>(</big><em>unistorage</em>, <em>to</em><big>)</big><a class="headerlink" href="#unistorage.models.AudioFile.convert" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.AudioFile.apply_template">
+<tt class="descname">apply_template</tt><big>(</big><em>unistorage</em>, <em>template</em><big>)</big><a class="headerlink" href="#unistorage.models.AudioFile.apply_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies template to this file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>unistorage</strong> (<a class="reference internal" href="#unistorage.client.UnistorageClient" title="unistorage.client.UnistorageClient"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.client.UnistorageClient</span></tt></a>) &#8211; Unistorage client</li>
+<li><strong>template</strong> (<a class="reference internal" href="#unistorage.models.Template" title="unistorage.models.Template"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.Template</span></tt></a>) &#8211; Template to be applied.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">unistorage.models.File</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="example-of-usage">
 <h1>Example of usage<a class="headerlink" href="#example-of-usage" title="Permalink to this headline">¶</a></h1>
@@ -105,7 +748,7 @@ can be installed via pip:</p>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Installation</a></li>
-<li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#module-unistorage.client">API</a></li>
 <li><a class="reference internal" href="#models">Models</a></li>
 <li><a class="reference internal" href="#example-of-usage">Example of usage</a></li>
 </ul>
@@ -138,6 +781,9 @@ can be installed via pip:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="#">unistorage-python-client 0.0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
