@@ -222,6 +222,11 @@ class VideoFile(RegularFile, Watermarkable):
         self.height = extra['video']['height']
         self.codec = extra['video']['codec']
 
+    @action
+    def extract_audio(self, unistorage, to):
+        """:rtype: :class:`File`"""
+        return 'extract_audio', {'to': to}
+
 
 class DocFile(RegularFile):
     """Represents document file."""
@@ -231,10 +236,20 @@ class DocFile(RegularFile):
         return 'convert', {'to': to}
 
 
+class AudioFile(RegularFile):
+    """Represents audio file."""
+    @action
+    def convert(self, unistorage, to):
+        """:rtype: :class:`File`"""
+        return 'convert', {'to': to}
+
+
 class FileFactory(object):
-    type_family_map = {
+    unistorage_type_map = {
+        'unknown': RegularFile,
         'image': ImageFile,
         'video': VideoFile,
+        'audio': AudioFile,
         'doc': DocFile
     }
 
@@ -244,11 +259,8 @@ class FileFactory(object):
 
         status = file_data['status']
         if status == 'ok':
-            mimetype = file_data['data']['mimetype']
-            type_family = (is_image(mimetype) and 'image') or \
-                          (is_video(mimetype) and 'video') or \
-                          (is_document(mimetype) and 'doc')
-            file_class = cls.type_family_map[type_family]
+            unistorage_type = file_data['data']['unistorage_type']
+            file_class = cls.unistorage_type_map[unistorage_type]
 
         elif status == 'just_uri':
             file_class = TemporaryFile
