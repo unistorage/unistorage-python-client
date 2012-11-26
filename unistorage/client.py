@@ -86,6 +86,22 @@ class UnistorageClient(object):
         """
         return self._request('post', url, data=data, files=files)
 
+    def get_file(self, file_uri):
+        """Retrieves data from Unistorage and returns :class:`unistorage.models.File`.
+        
+        :param resource_uri: File URI.
+        """
+        file_response = self._get(file_uri)
+        return FileFactory.build_from_dict(file_uri, file_response)
+    
+    def get_zip_file(self, zip_uri):
+        """Retrieves data from Unistorage and returns :class:`unistorage.models.ZipFile`.
+        
+        :param resource_uri: Zip file URI.
+        """
+        zip_response = self._get(zip_uri)
+        return ZipFile(zip_uri, zip_response)
+
     def upload_file(self, file_name, file_content, type_id=None):
         """Uploads file to the Unistorage. Returns :class:`unistorage.models.File`.
         
@@ -103,11 +119,7 @@ class UnistorageClient(object):
         data = type_id and {'type_id': type_id} or None
         files = {'file': (file_name, file_content)}
         upload_response = self._post('/', data=data, files=files)
-
-        file_uri = upload_response['resource_uri']
-        file_response = self._get(file_uri)
-
-        return FileFactory.build_from_dict(file_uri, file_response)
+        return self.get_file(upload_response['resource_uri'])
 
     def create_template(self, applicable_for, actions):
         """Creates template. Returns :class:`unistorage.models.Template`.
@@ -181,6 +193,4 @@ class UnistorageClient(object):
             'file': [file.resource_uri for file in files],
             'filename': zip_file_name
         })
-        zip_uri = response['resource_uri']
-        zip_response = self._get(zip_uri)
-        return ZipFile(zip_uri, zip_response)
+        return self.get_zip_file(response['resource_uri'])
