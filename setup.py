@@ -11,5 +11,5 @@ setup(
     author_email='anthony.romanovich@gmail.com',
 
     packages=['unistorage'],
-    install_requires=['requests>=0.14.1', 'decorator>=3.4.0'],
+    install_requires=['requests>=1.0.3', 'decorator>=3.4.0'],
 )

@@ -57,13 +57,16 @@ class UnistorageClient(object):
             raise UnistorageTimeout()
         
         status_code = response.status_code
+        try:
+            json = response.json()
+        except:
+            raise UnistorageError(
+                status_code, 'Unistorage API returned invalid JSON: %s' % response.content)
+
         if 200 <= status_code < 300:
-            if not response.json:
-                raise UnistorageError(
-                    status_code, 'Unistorage API returned invalid JSON: %s' % response.content)
-            return response.json
+            return json
         elif status_code >= 400:
-            msg = response.json and response.json.get('msg') or response.content
+            msg = json and json.get('msg') or response.content
             raise UnistorageError(status_code, msg)
 
     def _get(self, url, data=None):
