@@ -223,9 +223,24 @@ class VideoFile(RegularFile, Watermarkable):
         self.codec = extra['video']['codec']
 
     @action
+    def convert(self, unistorage, to, vcodec=None, acodec=None):
+        """:rtype: :class:`File`"""
+        args = {'to': to}
+        if vcodec:
+            args['vcodec'] = vcodec
+        if acodec:
+            args['acodec'] = acodec
+        return 'convert', args
+
+    @action
     def extract_audio(self, unistorage, to):
         """:rtype: :class:`File`"""
         return 'extract_audio', {'to': to}
+
+    @action
+    def capture_frame(self, unistorage, to, position):
+        """:rtype: :class:`File`"""
+        return 'capture_frame', {'to': to, 'position': position}
 
 
 class DocFile(RegularFile):
