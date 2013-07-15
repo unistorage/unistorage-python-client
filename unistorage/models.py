@@ -9,8 +9,9 @@ class Action(dict):
     """
     Class that represents action.
 
-    :param action_name: Action name.
-    :param action_args: Dictionary contains arguments of the action.
+    :param name: Action name;
+    :param with_low_priority: Whether action has low priority;
+    :param args: Dictionary contains arguments of the action.
 
     .. code-block:: python
 
@@ -20,13 +21,17 @@ class Action(dict):
         >>> action.encode()
         'action=resize&h=100&mode=crop&w=100'
     """
-    def __init__(self, name, *args):
+    def __init__(self, name, *args, **kwargs):
         super(Action, self).__init__(*args)
         self.name = name
+        self.with_low_priority = kwargs.get('with_low_priority', False)
 
     def encode(self):
         """Returns URL-encoded representation of this action."""
-        return urllib.urlencode(self.to_dict())
+        data = self.to_dict()
+        if self.with_low_priority:
+            data['with_low_priority'] = 1
+        return urllib.urlencode(data)
 
     def to_dict(self):
         """Returns dictionary that contains both action arguments and action name.
@@ -143,14 +148,15 @@ class RegularFile(File):
 
 @decorator.decorator
 def action(method, self, unistorage, *args, **kwargs):
+    with_low_priority = kwargs.pop('with_low_priority', False)
     action_name, action_args = method(self, unistorage, *args, **kwargs)
-    action = Action(action_name, action_args)
+    action = Action(action_name, action_args, with_low_priority=with_low_priority)
     return unistorage.apply_action(self, action)
 
 
 class Watermarkable(object):
     @action
-    def watermark(self, unistorage, watermark, corner, w, h, w_pad, h_pad):
+    def watermark(self, unistorage, watermark, corner, w, h, w_pad, h_pad, **kwargs):
         """:rtype: :class:`File`"""
         return 'watermark', {
             'watermark': watermark.resource_uri,
@@ -180,22 +186,22 @@ class ImageFile(RegularFile, Watermarkable):
         self.height = extra['height']
 
     @action
-    def convert(self, unistorage, to):
+    def convert(self, unistorage, to, **kwargs):
         """:rtype: :class:`File`"""
         return 'convert', {'to': to}
 
     @action
-    def resize(self, unistorage, mode, w, h):
+    def resize(self, unistorage, mode, w, h, **kwargs):
         """:rtype: :class:`File`"""
         return 'resize', {'mode': mode, 'w': w, 'h': h}
     
     @action
-    def grayscale(self, unistorage):
+    def grayscale(self, unistorage, **kwargs):
         """:rtype: :class:`File`"""
         return 'grayscale', {}
     
     @action
-    def rotate(self, unistorage, angle):
+    def rotate(self, unistorage, angle, **kwargs):
         """:rtype: :class:`File`"""
         return 'rotate', {'angle': angle}
 
@@ -223,7 +229,7 @@ class VideoFile(RegularFile, Watermarkable):
         self.codec = extra['video']['codec']
 
     @action
-    def convert(self, unistorage, to, vcodec=None, acodec=None):
+    def convert(self, unistorage, to, vcodec=None, acodec=None, **kwargs):
         """:rtype: :class:`File`"""
         args = {'to': to}
         if vcodec:
@@ -233,12 +239,12 @@ class VideoFile(RegularFile, Watermarkable):
         return 'convert', args
 
     @action
-    def extract_audio(self, unistorage, to):
+    def extract_audio(self, unistorage, to, **kwargs):
         """:rtype: :class:`File`"""
         return 'extract_audio', {'to': to}
 
     @action
-    def capture_frame(self, unistorage, to, position):
+    def capture_frame(self, unistorage, to, position, **kwargs):
         """:rtype: :class:`File`"""
         return 'capture_frame', {'to': to, 'position': position}
 
@@ -246,7 +252,7 @@ class VideoFile(RegularFile, Watermarkable):
 class DocFile(RegularFile):
     """Represents document file."""
     @action
-    def convert(self, unistorage, to):
+    def convert(self, unistorage, to, **kwargs):
         """:rtype: :class:`File`"""
         return 'convert', {'to': to}
 
@@ -254,7 +260,7 @@ class DocFile(RegularFile):
 class AudioFile(RegularFile):
     """Represents audio file."""
     @action
-    def convert(self, unistorage, to):
+    def convert(self, unistorage, to, **kwargs):
         """:rtype: :class:`File`"""
         return 'convert', {'to': to}
 
