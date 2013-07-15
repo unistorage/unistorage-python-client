@@ -134,16 +134,18 @@ class RegularFile(File):
         self.size = data['size']
         self.name = data['name']
 
-    def apply_template(self, unistorage, template):
+    def apply_template(self, unistorage, template, with_low_priority=False):
         """Applies template to this file.
 
         :param unistorage: Unistorage client
         :type unistorage: :class:`unistorage.client.UnistorageClient`
         :param template: Template to be applied.
         :type template: :class:`unistorage.models.Template`
+        :type with_low_priority: :class:`bool`
         :rtype: :class:`unistorage.models.File`
         """
-        return unistorage.apply_template(self, template)
+        return unistorage.apply_template(self, template,
+                                         with_low_priority=with_low_priority)
 
 
 @decorator.decorator

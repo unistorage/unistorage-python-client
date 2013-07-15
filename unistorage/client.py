@@ -162,7 +162,7 @@ class UnistorageClient(object):
         file_response = self._get(resulting_file_uri)
         return FileFactory.build_from_dict(resulting_file_uri, file_response)
 
-    def apply_template(self, file, template):
+    def apply_template(self, file, template, with_low_priority=False):
         """Applies `template` to the `file`.
 
         :param file: Source file.
@@ -171,7 +171,10 @@ class UnistorageClient(object):
         :type template: :class:`unistorage.models.Template`
         :rtype: :class:`unistorage.models.File`
         """
-        template_response = self._get(file.resource_uri, data={'template': template.resource_uri})
+        data = {'template': template.resource_uri}
+        if with_low_priority:
+            data['with_low_priority'] = '1'
+        template_response = self._get(file.resource_uri, data=data)
         resulting_file_uri = template_response['resource_uri']
         file_response = self._get(resulting_file_uri)
         return FileFactory.build_from_dict(resulting_file_uri, file_response)
