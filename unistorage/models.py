@@ -180,12 +180,17 @@ class ImageFile(RegularFile, Watermarkable):
     .. attribute:: height
 
         Image height.
+
+    .. attribute:: orientation
+
+        EXIF orientation (number from 1 to 8).
     """
     def __init__(self, resource_uri, response):
         super(ImageFile, self).__init__(resource_uri, response)
         extra = response['data']['extra']
         self.width = extra['width']
         self.height = extra['height']
+        self.orientation = extra['orientation']
 
     @action
     def convert(self, unistorage, to, **kwargs):

@@ -59,6 +59,7 @@ class UnistorageClient(object):
         status_code = response.status_code
         try:
             json = response.json()
+            print json
         except:
             raise UnistorageError(
                 status_code, 'Unistorage API returned invalid JSON: %s' % response.content)

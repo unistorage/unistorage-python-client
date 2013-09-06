@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='unistorage',
-    version='0.0.3',
+    version='0.0.4',
     description='Python client for the Unistorage API',
     url='https://github.com/unistorage/unistorage-python-client',
 
