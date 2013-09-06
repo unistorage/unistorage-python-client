@@ -265,15 +265,16 @@ Supported types: <tt class="docutils literal"><span class="pre">'image'</span></
 <h1>Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="unistorage.models.Action">
-<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">Action</tt><big>(</big><em>name</em>, <em>*args</em><big>)</big><a class="headerlink" href="#unistorage.models.Action" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">unistorage.models.</tt><tt class="descname">Action</tt><big>(</big><em>name</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#unistorage.models.Action" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class that represents action.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>action_name</strong> &#8211; Action name.</li>
-<li><strong>action_args</strong> &#8211; Dictionary contains arguments of the action.</li>
+<li><strong>name</strong> &#8211; Action name;</li>
+<li><strong>with_low_priority</strong> &#8211; Whether action has low priority;</li>
+<li><strong>args</strong> &#8211; Dictionary contains arguments of the action.</li>
 </ul>
 </td>
 </tr>
@@ -567,8 +568,34 @@ It can be URL-encoded and used to call the Unistorage API.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="unistorage.models.VideoFile.convert">
+<tt class="descname">convert</tt><big>(</big><em>unistorage</em>, <em>to</em>, <em>vcodec=None</em>, <em>acodec=None</em><big>)</big><a class="headerlink" href="#unistorage.models.VideoFile.convert" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="unistorage.models.VideoFile.extract_audio">
 <tt class="descname">extract_audio</tt><big>(</big><em>unistorage</em>, <em>to</em><big>)</big><a class="headerlink" href="#unistorage.models.VideoFile.extract_audio" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#unistorage.models.File" title="unistorage.models.File"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="unistorage.models.VideoFile.capture_frame">
+<tt class="descname">capture_frame</tt><big>(</big><em>unistorage</em>, <em>to</em>, <em>position</em><big>)</big><a class="headerlink" href="#unistorage.models.VideoFile.capture_frame" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
