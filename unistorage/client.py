@@ -16,7 +16,7 @@ class UnistorageError(Exception):
         self.msg = msg
 
     def __str__(self):
-        return repr(self.msg)
+        return '<{0}: {1}>'.format(self.status_code, self.msg)
 
 
 class UnistorageTimeout(Exception):
