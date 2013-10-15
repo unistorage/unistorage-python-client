@@ -62,7 +62,7 @@ class UnistorageClient(object):
         except:
             raise UnistorageError(
                 status_code, 'Unistorage API returned invalid JSON: %s' % response.content)
-        print json
+
         if 200 <= status_code < 300:
             return json
         elif status_code >= 400:
