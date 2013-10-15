@@ -1,4 +1,6 @@
+import sys
 import urllib
+import warnings
 
 import decorator
 
@@ -69,7 +71,7 @@ class File(object):
     """
     def __init__(self, resource_uri, response):
         self.resource_uri = resource_uri
-        self.ttl = response['ttl']
+        self.ttl = response.get('ttl')
 
     def __str__(self):
         return self.resource_uri
@@ -146,6 +148,15 @@ class RegularFile(File):
         """
         return unistorage.apply_template(self, template,
                                          with_low_priority=with_low_priority)
+    
+    def __getattribute__(self, name):
+        rv = super(RegularFile, self).__getattribute__(name)
+        if name == 'ttl':
+            warnings.warn('RegularFile.ttl is deprecated and will contain None '
+                          'in future API versions.', FutureWarning, stacklevel=2)
+            if rv is None:
+                rv = sys.maxint
+        return rv
 
 
 @decorator.decorator
