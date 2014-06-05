@@ -77,7 +77,7 @@ class UnistorageClient(object):
         """
         return self._request('get', url, params=data)
     
-    def _post(self, url, data=None, files=None):
+    def _post(self, url, data=None, files=None, timeout=None):
         """Sends a POST request. Returns the response dictionary.
         
         :param url: Relative URL.
@@ -87,7 +87,8 @@ class UnistorageClient(object):
             See requests documentation for details:
             http://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file
         """
-        return self._request('post', url, data=data, files=files)
+        return self._request('post', url, data=data, files=files,
+                             timeout=timeout)
 
     def get_file(self, file_uri):
         """Retrieves data from Unistorage and returns :class:`unistorage.models.File`.
@@ -105,7 +106,7 @@ class UnistorageClient(object):
         zip_response = self._get(zip_uri)
         return ZipFile(zip_uri, zip_response)
 
-    def upload_file(self, file_name, file_content, type_id=None):
+    def upload_file(self, file_name, file_content, type_id=None, timeout=None):
         """Uploads file to the Unistorage. Returns :class:`unistorage.models.File`.
         
         :param file_name: File name.
@@ -121,7 +122,8 @@ class UnistorageClient(object):
         """
         data = type_id and {'type_id': type_id} or None
         files = {'file': (file_name, file_content)}
-        upload_response = self._post('/', data=data, files=files)
+        upload_response = self._post('/', data=data, files=files,
+                                     timeout=timeout)
         return self.get_file(upload_response['resource_uri'])
 
     def create_template(self, applicable_for, actions):
