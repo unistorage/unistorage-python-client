@@ -83,6 +83,7 @@ class UnistorageClient(object):
         :param url: Relative URL.
         :param data: Dictionary to be sent in the body of request.
         :param files: Dictionary of the files for multipart encoding upload.
+        :param timeout: Integer value that define request timeout in seconds.
             It passed directly to the `requests <http://docs.python-requests.org/>`_ library.
             See requests documentation for details:
             http://docs.python-requests.org/en/latest/user/quickstart/#post-a-multipart-encoded-file
@@ -112,6 +113,7 @@ class UnistorageClient(object):
         :param file_name: File name.
         :param file_content: File-like object to be uploaded.
         :param type_id: Type identifier.
+        :param timeout: Integer value that define request timeout in seconds.
         :rtype: :class:`unistorage.models.File`
 
         .. code-block:: python
